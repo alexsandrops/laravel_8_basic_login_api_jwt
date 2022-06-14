@@ -30,6 +30,8 @@ Route::group([
     Route::post('/refresh', [App\Http\Controllers\AuthController::class, 'refresh'])->name('refresh');
     Route::post('/me', [App\Http\Controllers\AuthController::class, 'me'])->name('me');
 
+    Route::post('/produto/store', [App\Http\Controllers\API\ProdutoController::class, 'store'])->name('produtos.store');
+
 });
 
 // Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
