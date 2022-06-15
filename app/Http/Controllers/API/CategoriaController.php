@@ -3,62 +3,60 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProdutoRequest;
-use App\Models\Produto;
+use App\Http\Requests\CategoriaRequest;
+use App\Models\categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
-class ProdutoController extends Controller
+class CategoriaController extends Controller
 {
-    protected $produto;
+    protected $categoria;
 
-    public function __construct(Produto $produto)
+    public function __construct(categoria $categoria)
     {
-        $this->produto = $produto;
+        $this->categoria = $categoria;
     }
 
     public function index()
     {
-        $produtos = $this->produto->with('produto_categoria')->get();
-
-        return Response::json($produtos);
-    }
-
-    public function show($id)
-    {
-        $produto = $this->produto->with('produto_categoria')->find($id);
-
-        return Response::json($produto);
-    }
-
-    public function store(ProdutoRequest $request)
-    {
-        DB::beginTransaction();
-        try {
-            $return = $this->produto->create($request->validated());
-            DB::commit();
-        } catch (\Throwable $th) {
-            DB::rollBack();
-
-            return Response::json($return = false);
-        }
+        $return = $this->categoria->get();
         
         return Response::json($return);
     }
 
-    public function update(ProdutoRequest $request, $id)
+    public function store(CategoriaRequest $request)
     {
         DB::beginTransaction();
         try {
-            $return = $this->produto->find($id)->update($request->validated());
+            $return = $this->categoria->create($request->validated());
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
-
             return Response::json($return = false);
         }
-        
+
+        return Response::json($return);
+    }
+
+    public function show($id)
+    {
+        $return = $this->categoria->find($id);
+
+        return Response::json($return);
+    }
+
+    public function update(CategoriaRequest $request, $id)
+    {
+        DB::beginTransaction();;
+        try {
+            $return = $this->categoria->find($id)->update($request->validated());
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return Response::json($return = false);
+        }
+
         return Response::json($return);
     }
 
@@ -66,11 +64,10 @@ class ProdutoController extends Controller
     {
         DB::beginTransaction();
         try {
-            $return = $this->produto->find($id)->delete();
+            $return = $this->categoria->find($id)->delete();
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
-
             return Response::json($return = false);
         }
 

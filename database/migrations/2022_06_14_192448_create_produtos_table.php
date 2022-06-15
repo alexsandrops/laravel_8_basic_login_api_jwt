@@ -17,7 +17,12 @@ class CreateProdutosTable extends Migration
             $table->bigIncrements('produto_id')->autoIncrement()->unique();
             $table->string('nome');
             $table->float('preco');
+            $table->unsignedBigInteger('categoria_id');
             $table->timestamps();
+
+            $table->foreign('categoria_id')->references('categoria_id')->on('categorias')
+                ->onUpdate('cascade')->onDelete('cascade');
+
         });
     }
 
