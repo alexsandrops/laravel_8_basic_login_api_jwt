@@ -18,19 +18,25 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
+
 Route::group([
 
-    'middleware' => 'api',
+    'middleware' => 'auth:api',
     // 'prefix' => 'auth'
 
 ], function ($router) {
 
-    Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
     Route::post('/refresh', [App\Http\Controllers\AuthController::class, 'refresh'])->name('refresh');
     Route::post('/me', [App\Http\Controllers\AuthController::class, 'me'])->name('me');
-
+    
+    
+    Route::get('/produtos', [App\Http\Controllers\API\ProdutoController::class, 'index'])->name('produtos.index');
+    Route::get('/produtos/show/{id}', [App\Http\Controllers\API\ProdutoController::class, 'show'])->name('produtos.show');
     Route::post('/produto/store', [App\Http\Controllers\API\ProdutoController::class, 'store'])->name('produtos.store');
+    Route::put('/produtos/update/{id}', [App\Http\Controllers\API\ProdutoController::class, 'update'])->name('produtos.update');
+    Route::delete('/produtos/delete/{id}', [App\Http\Controllers\API\ProdutoController::class, 'destroy'])->name('produtos.destroy');
 
 });
 
